@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ profile.name }} — Data Scientist &amp; Python Developer</title>
+<meta name="description" content="{{ profile.name }} — Aspiring Data Scientist, AI Enthusiast &amp; Python Developer from {{ profile.location }}.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand">abdul<span>.rehman()</span></div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">☰</button>
+    <div class="nav-links" id="navLinks">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#education">Education</a>
+      <a href="#certs">Certifications</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flash-wrap">
+      {% for category, msg in messages %}
+        <div class="flash flash-{{ category }}">{{ msg }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<header class="hero">
+  <div class="wrap">
+    <div class="terminal">
+      <div class="term-bar">
+        <span class="dot" style="background:var(--red-dot)"></span>
+        <span class="dot" style="background:var(--yellow-dot)"></span>
+        <span class="dot" style="background:var(--green-dot)"></span>
+        <span class="term-title">portfolio.ipynb</span>
+      </div>
+      <div class="term-body">
+        <div class="line-in"><span class="prompt">In [1]:</span> <span id="typedLine"></span><span class="caret" id="caret"></span></div>
+        <div class="out-block" id="outBlock">
+          <div><span class="k">name</span>       = <span class="s">"{{ profile.name }}"</span></div>
+          <div><span class="k">role</span>       = <span class="s">"{{ profile.role }}"</span></div>
+          <div><span class="k">location</span>   = <span class="s">"{{ profile.location }}"</span></div>
+          <div><span class="k">status</span>     = <span class="s">"Learning Data Science &amp; AI @ SMIT"</span></div>
+          <div><span class="k">focus</span>      = <span class="s">["Python", "Pandas", "ML", "Data Viz", "SQL"]</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="mailto:{{ profile.email }}">Email me</a>
+      <a class="btn btn-ghost" href="{{ profile.github }}" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="btn btn-ghost" href="{{ profile.linkedin }}" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </div>
+</header>
+
+<section class="section" id="about">
+  <div class="wrap">
+    <div class="eyebrow">about</div>
+    <h2 class="title">A learner who ships projects, not just tutorials</h2>
+    <div class="about-grid">
+      <div>
+        <p>I'm a passionate learner with a strong interest in <strong>Artificial Intelligence, Data Science, and Software Development</strong>. I've completed Core Python Programming and keep sharpening my skills through real, practical projects rather than passive learning.</p>
+        <p>I enjoy analyzing data, writing clean code, and turning messy numbers into insights people can actually use. Right now I'm expanding my portfolio while deepening my knowledge of <strong>Machine Learning, Data Analysis, SQL, and Data Visualization</strong> at Saylani Mass IT Training (SMIT).</p>
+        <p>My goal: build a career as an <strong>AI Engineer and Data Scientist</strong> — working on impactful projects, publishing research, and contributing to open source along the way.</p>
+      </div>
+      <div class="fact-card">
+        {% for f in facts %}
+        <div class="fact-row"><span class="k">{{ f.k }}</span><span class="v">{{ f.v }}</span></div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="skills">
+  <div class="wrap">
+    <div class="eyebrow">skills</div>
+    <h2 class="title">skills_df.head()</h2>
+    <div class="df-wrap">
+      <div class="df-head">DataFrame · {{ skills|length }} rows × 3 columns</div>
+      <table>
+        <thead>
+          <tr><th class="idx"></th><th>category</th><th>stack</th><th>proficiency</th></tr>
+        </thead>
+        <tbody>
+          {% for s in skills %}
+          <tr>
+            <td class="idx">{{ loop.index0 }}</td>
+            <td>{{ s.category }}{% if s.note %} <span style="color:var(--amber);font-size:11px;">· {{ s.note }}</span>{% endif %}</td>
+            <td>
+              {% for tag in s.tags %}<span class="tag">{{ tag }}</span>{% endfor %}
+            </td>
+            <td><div class="lvl-bar"><div class="lvl-fill" style="width:{{ s.level }}%"></div></div></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="projects">
+  <div class="wrap">
+    <div class="eyebrow">projects</div>
+    <h2 class="title">Cells I've run and shipped</h2>
+
+    {% for p in projects %}
+    <div class="cell">
+      <div class="cell-in">
+        <div class="cell-tag">In [{{ p.num }}]: load_project("{{ p.slug }}")</div>
+        <div class="cell-title">{{ p.emoji }} {{ p.title }}</div>
+      </div>
+      <div class="cell-out">
+        {{ p.desc }}
+        <div class="stack">{% for t in p.stack %}<span class="tag">{{ t }}</span>{% endfor %}</div>
+      </div>
+    </div>
+    {% endfor %}
+
+    <div style="text-align:center;margin-top:12px;">
+      <a class="btn btn-ghost" href="{{ profile.github }}" target="_blank" rel="noopener">See all projects on GitHub ↗</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="education">
+  <div class="wrap">
+    <div class="eyebrow">education</div>
+    <h2 class="title">Timeline</h2>
+    <div class="tl">
+      {% for e in education %}
+      <div class="tl-item">
+        <div class="tl-year">{{ e.year }}</div>
+        <div class="tl-name">{{ e.name }}</div>
+        <div class="tl-org">{{ e.org }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section" id="certs">
+  <div class="wrap">
+    <div class="eyebrow">certifications</div>
+    <h2 class="title">Credentials on file</h2>
+    <div class="cert-grid">
+      {% for c in certs %}
+      <div class="cert" {% if c.highlight %}style="border-color:var(--mint-dim);"{% endif %}>
+        <div class="cert-title">{{ c.title }}{% if c.note %} <span style="color:var(--amber);font-size:11px;">· {{ c.note }}</span>{% endif %}</div>
+        <div class="cert-org">{{ c.org }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <div class="wrap">
+    <div class="contact-box">
+      <h3>Let's build something meaningful</h3>
+      <p>Open to internships, freelance work, and collaboration on AI &amp; data projects.</p>
+
+      <form class="contact-form" method="POST" action="{{ url_for('contact') }}">
+        <input type="text" name="name" placeholder="Your name" required>
+        <input type="email" name="email" placeholder="Your email" required>
+        <textarea name="message" rows="4" placeholder="Your message" required></textarea>
+        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">Send message</button>
+      </form>
+
+      <div class="contact-links">
+        <a class="btn btn-ghost" href="mailto:{{ profile.email }}">{{ profile.email }}</a>
+        <a class="btn btn-ghost" href="tel:{{ profile.phone_href }}">{{ profile.phone }}</a>
+        <a class="btn btn-ghost" href="{{ profile.linkedin }}" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn btn-ghost" href="{{ profile.github }}" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © {{ year }} {{ profile.name }} — built with Python-brain and Flask hands.
+</footer>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
